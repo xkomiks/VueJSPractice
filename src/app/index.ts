@@ -1,11 +1,11 @@
-import './styles/main.css';
-
 import { createApp } from 'vue';
-import { createPinia } from 'pinia';
 
+import { router } from './modules/router';
+import { pinia } from './modules/pinia';
+
+import './styles/main.css';
 import App from './App.vue';
-import { router } from './router';
 
 export const app = createApp(App)
-  .use(createPinia())
+  .use(pinia)
   .use(router);

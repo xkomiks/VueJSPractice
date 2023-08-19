@@ -1,12 +1,21 @@
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
+import { ref } from 'vue';
+import { defineStore } from 'pinia';
+import { saveDataToLocalStorage, getDataFromLocalStorage, removeDataFromLocalStorage } from '@/shared/lib/localStorage';
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
+const STORE_NAME = 'counter';
+
+export const useCounterStore = defineStore(STORE_NAME, () => {
+  const count = ref(getDataFromLocalStorage<number>(STORE_NAME) || 0);
+
   function increment() {
-    count.value++
+    count.value++;
+    saveDataToLocalStorage(STORE_NAME, count.value);
   }
 
-  return { count, doubleCount, increment }
-})
+  function clearStore() {
+    removeDataFromLocalStorage(STORE_NAME);
+    count.value = 0;
+  }
+
+  return { count, increment, clearStore };
+});
